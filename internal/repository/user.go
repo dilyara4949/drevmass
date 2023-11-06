@@ -18,7 +18,7 @@ func NewUserRepository(db postgres.Database) domain.UserRepository {
 
 func (ur *userRepository) Create(user *domain.User) error {
 	
-	_, err := ur.database.InsertOne(user)
+	_, err := ur.database.InsertUser(user)
 
 	return err
 }

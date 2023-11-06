@@ -11,8 +11,9 @@ type database struct {
 }
 
 type Database interface {
-	InsertOne(object *domain.User) (interface{}, error)
+	InsertUser(object *domain.User) (interface{}, error)
 	GetByEmail(email string) (domain.User, error)
+	GetUserByID(id uint) (domain.User, error)
 	Close() error
 }
 
@@ -23,23 +24,25 @@ func NewDatabase(url string) (Database, error){
 		return nil, err
 	}
 
-
 	err = db.AutoMigrate(&domain.User{})
-	//
-
+	
 	return &database{
 		DB: db,}, 
 		err
 }
 
 
+func (db *database) GetUserByID(id uint) (domain.User, error) {
+	user := domain.User{}
+	result:= db.DB.Where(&domain.User{ID: id}).Find(&user)
 
-func (db *database) InsertOne(object *domain.User) (interface{}, error){
-	// object.Activity = 
+	return user, result.Error
+}
 
+func (db *database) InsertUser(object *domain.User) (interface{}, error){
+	
 	result := db.DB.Create(object)
 
-	
 	return object, result.Error
 }
 
