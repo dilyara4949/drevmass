@@ -16,6 +16,7 @@ type SignupController struct {
 
 func (sc *SignupController) Signup(c *gin.Context) {
 	var request domain.Signup
+	
 
 	err := c.ShouldBind(&request)
 	if err != nil {
@@ -23,17 +24,18 @@ func (sc *SignupController) Signup(c *gin.Context) {
 		// c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "3"})
 		return
 	}
-
+	// fmt.Println(request.Email, request.Name)
 	if request.Email == "" || request.Password == "" || request.Name =="" {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: "Required fields are missing or invalid."})
 		// c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "9"})
 		return
 	}
-
+	
 
 	u, err := sc.SignupUsecase.GetUserByEmail(c, request.Email)
+	// fmt.Print(u)
 	// if (domain.User{} == u) {
-	if (u != domain.User{}) { 
+	if (u != nil) { 
 		c.JSON(http.StatusConflict, domain.ErrorResponse{Message: "User with given email already exists"})
 		// c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "4"})
 		return
@@ -57,7 +59,7 @@ func (sc *SignupController) Signup(c *gin.Context) {
 		Email:    request.Email,
 		Password: request.Password,
 	}
-	err = sc.SignupUsecase.Create(c, &user)
+	_, err = sc.SignupUsecase.Create(c, &user)
 	if err != nil {
 		c.JSON(http.StatusConflict, domain.ErrorResponse{Message: err.Error()})
 		// c.JSON(http.StatusConflict, domain.ErrorResponse{Message: "1"})

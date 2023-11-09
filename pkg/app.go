@@ -1,17 +1,25 @@
 package pkg
 
-import "github.com/dilyara4949/drevmass/internal/postgres"
+import (
+	"github.com/jackc/pgx/v4/pgxpool"
+)
 
 type Application struct {
 	Env *Env
-	Pql postgres.Database
+	Pql *pgxpool.Pool
 }
 
-func App() Application {
+func App() (Application, error) {
 	app := &Application{}
 	app.Env = NewEnv()
-	app.Pql = NewDatabase(app.Env)
-	return *app
+	conn , err:= NewPgxConn(app.Env)
+	if err != nil {
+		return Application{}, err
+	}
+	app.Pql = conn
+	
+
+	return *app, nil
 }
 
 func (app *Application)CloseDBConnection() {

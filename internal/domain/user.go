@@ -1,14 +1,19 @@
 package domain
 
-import "time"
+import (
+	"context"
+	"time"
+
+	
+)
 
 
 
 type User struct {
-	ID        uint   `sql:"AUTO_INCREMENT" gorm:"primary_key"`
-	Email     string `gorm:"unique; not null"`
-	Password  string `gorm:" not null"`
-	Name      string `gorm:" not null"`
+	ID        uint   
+	Email     string 
+	Password  string 
+	Name      string 
 	Gender    uint 
 	Height    uint 
 	Weight    uint 
@@ -17,7 +22,11 @@ type User struct {
 }
 
 type UserRepository interface {
-	Create(user *User) error
-	GetByEmail(email string) (User, error)
-	GetByID( id uint) (User, error)
+	Create(ctx context.Context, user *User) (*User, error)
+	GetByEmail(ctx context.Context, email string) (*User, error) 
+	GetByID(ctx context.Context, id uint) (*User, error) 
+}
+
+type UserUsecase interface {
+	GetUserByID(c context.Context, id uint) (*User, error)
 }

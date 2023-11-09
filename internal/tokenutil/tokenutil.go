@@ -58,22 +58,28 @@ func IsAuthorized(requestToken string, secret string) (bool, error) {
 }
 
 
-func ExtractIDFromToken(requestToken string, secret string) (string, error) {
-	token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte(secret), nil
-	})
-	if err != nil {
-		return "", err
-	}
+func ExtractIDFromToken(requestToken string, secret string) (uint, error) {
+    token, err := jwt.Parse(requestToken, func(token *jwt.Token) (interface{}, error) {
+        if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+            return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+        }
+        return []byte(secret), nil
+    })
+    if err != nil {
+        return 0, err
+    }
 
-	claims, ok := token.Claims.(jwt.MapClaims)
+    claims, ok := token.Claims.(jwt.MapClaims)
+    if !ok || !token.Valid {
+        return 0, fmt.Errorf("Invalid token")
+    }
 
-	if !ok && !token.Valid {
-		return "", fmt.Errorf("Invalid token")
-	}
+    idFloat, ok := claims["id"].(float64)
+    if !ok {
+        return 0, fmt.Errorf("ID is not a valid number")
+    }
 
-	return claims["id"].(string), nil
+    // Convert the float64 ID to uint
+    userID := uint(idFloat)
+    return userID, nil
 }

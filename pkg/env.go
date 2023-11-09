@@ -13,7 +13,7 @@ type Env struct {
 	DBHost                 string `mapstructure:"DB_HOST"`
 	DBPort                 string `mapstructure:"DB_PORT"`
 	DBUser                 string `mapstructure:"DB_USER"`
-	DBPass                 string `mapstructure:"DB_PASS"`
+	DBPass                 string `mapstructure:"DB_PASSORD"`
 	DBName                 string `mapstructure:"DB_NAME"`
 	AccessTokenExpiryHour  int    `mapstructure:"ACCESS_TOKEN_EXPIRY_HOUR"`
 	RefreshTokenExpiryHour int    `mapstructure:"REFRESH_TOKEN_EXPIRY_HOUR"`

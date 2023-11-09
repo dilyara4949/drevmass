@@ -21,16 +21,16 @@ func NewSignupUsecase(userRepository domain.UserRepository, timeout time.Duratio
 	}
 }
 
-func (su *signupUsecase) Create(c context.Context, user *domain.User) error {
+func (su *signupUsecase) Create(c context.Context, user *domain.User) (*domain.User, error) {
 	_, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.userRepository.Create(user)
+	return su.userRepository.Create(c, user)
 }
 
-func (su *signupUsecase) GetUserByEmail(c context.Context, email string) (domain.User, error) {
+func (su *signupUsecase) GetUserByEmail(c context.Context, email string) (*domain.User, error) {
 	_, cancel := context.WithTimeout(c, su.contextTimeout)
 	defer cancel()
-	return su.userRepository.GetByEmail(email)
+	return su.userRepository.GetByEmail(c, email)
 }
 
 

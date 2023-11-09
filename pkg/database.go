@@ -1,43 +1,67 @@
+// Package postgres implements postgres connection.
 package pkg
 
-
 import (
+	"context"
 	"fmt"
-	"log"
+	"time"
 
-	p "github.com/dilyara4949/drevmass/internal/postgres"
-	// "gorm.io/driver/postgres"
-	// "gorm.io/gorm"
+	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/pkg/errors"
 )
 
+const (
+	maxConn           = 50
+	healthCheckPeriod = 3 * time.Minute
+	maxConnIdleTime   = 1 * time.Minute
+	maxConnLifetime   = 3 * time.Minute
+	minConns          = 10
+	lazyConnect       = false
+)
 
-func NewDatabase(env *Env) p.Database {
+// NewPgxConn pool
+func NewPgxConn(env *Env) (*pgxpool.Pool, error) {
 
 	username := env.DBUser
 	password := env.DBPass
 	host := env.DBHost
 	port := env.DBPort
 	dbname := env.DBName
+	ctx := context.Background()
+	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
+		host,
+		port,
+		username,
+		dbname,
+		password,
+	)
 
-	url := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",host, username, password, dbname, port)
-
-	db, err := p.NewDatabase(url)
+	poolCfg, err := pgxpool.ParseConfig(dataSourceName)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return db
+	poolCfg.MaxConns = maxConn
+	poolCfg.HealthCheckPeriod = healthCheckPeriod
+	poolCfg.MaxConnIdleTime = maxConnIdleTime
+	poolCfg.MaxConnLifetime = maxConnLifetime
+	poolCfg.MinConns = minConns
+	poolCfg.LazyConnect = lazyConnect
+
+	connPool, err := pgxpool.ConnectConfig(ctx, poolCfg)
+	if err != nil {
+		return nil, errors.Wrap(err, "pgx.ConnectConfig")
+	}
+
+	fmt.Println("sussecc connection")
+
+	return connPool, nil
 }
 
 
 
-func CloseDatabase(db p.Database) {
-	if db == nil {
-		return
+func Close( p *pgxpool.Pool)  {
+	if p != nil {
+		p.Close()
 	}
-	err := db.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Connection to postgres closed")
 }

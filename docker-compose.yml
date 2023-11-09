@@ -1,0 +1,42 @@
+# version: "3.8"
+
+
+services:
+  postgres:
+    image: postgres
+    # restart: always
+    env_file: .env
+    ports:
+      - "5433:5433"
+    volumes:
+      - dbdata:/data/db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=drevmass
+    # ports:
+    #   - 5433:5432
+
+
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    # ports:
+    #   - "8080:8000"
+    depends_on: 
+      - postgres
+    env_file: .env
+    ports:
+      - "8081:8081"
+    environment:
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5433
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 12345
+      DATABASE_NAME: drevmass
+    # command: ["/app/main"]
+
+
+volumes:
+  dbdata:
