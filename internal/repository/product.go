@@ -71,14 +71,6 @@ func (p *productRepository) GetByID(ctx context.Context, id string) (domain.Prod
 
 func (p *productRepository) Update(ctx context.Context, product domain.Product) (domain.Product, error) {
 	
-	// u, err := p.GetByID(ctx, fmt.Sprint(product.ID))
-	// fmt.Println(u)
-	// if (u == domain.Product{}) {
-	// 	fmt.Printf(err.Error())
-	// 	return domain.Product{}, err
-	// }
-	
-
 	if err := p.db.QueryRow(ctx, 
 		updateProductQuery, 
 		&product.Name, 
@@ -93,8 +85,9 @@ func (p *productRepository) Update(ctx context.Context, product domain.Product) 
 		&product.Depth,
 		&product.Icon,
 		&product.Status,
+		&product.ID,
 		).Scan(&product.ID ); err != nil {
-			return domain.Product{}, errors.Wrap(err, "(Product with fiven id does not exist) Scan")
+			return domain.Product{}, errors.Wrap(err, "(Product with given id does not exist) Scan")
 	}
 	
 	return product, nil

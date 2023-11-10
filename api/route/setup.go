@@ -4,6 +4,9 @@ import (
 	"time"
 
 	"github.com/dilyara4949/drevmass/api/route/day"
+	"github.com/dilyara4949/drevmass/api/route/support"
+	"github.com/dilyara4949/drevmass/api/route/favorites"
+	"github.com/dilyara4949/drevmass/api/route/lesson"
 	"github.com/dilyara4949/drevmass/api/route/product"
 	"github.com/dilyara4949/drevmass/api/route/user"
 	"github.com/dilyara4949/drevmass/pkg"
@@ -25,4 +28,7 @@ func Setup(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, gin *gin.Engin
 	user.NewUserRouter(env, timeout, db, protectedRouter)
 	day.NewDayRouter(env, timeout, db, protectedRouter)
 	product.NewProductRouter(env, timeout, db, protectedRouter)
+	lesson.NewLessonRouter(env, timeout, db, protectedRouter)
+	favorites.NewFavoritesRouter(env, timeout, db, protectedRouter)
+	support.NewSupportRouter(env, timeout, db, protectedRouter)
 }

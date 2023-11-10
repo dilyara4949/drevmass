@@ -44,7 +44,55 @@ const (
 
 	updateProductQuery = `UPDATE products
 						SET name = $1, title = $2, Description = $3, ImageSrc = $4, VideoSrc = $5, Price = $6, Weight = $7, Length = $8, height = $9, depth = $10, icon=$11, status = $12
-						WHERE id = $9 returning id`
+						WHERE id = $13 returning id`
 
 	deleteProductQuery = `delete from products where id=$1`
+)
+
+
+// lesson queries
+const (
+	createLessonQuery = `INSERT INTO lessons (Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+	RETURNING  id`
+
+	getLessonQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons WHERE id = $1`
+
+	getAllLessonQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons`
+
+	updateLessonQuery = `UPDATE lessons
+						SET name = $1, title = $2, Description = $3, ImageSrc = $4, VideoSrc = $5, Duration = $6,  Updated_at = $7
+						WHERE id = $8 returning id`
+
+	deleteLessonQuery = `delete from lessons where id=$1`
+)
+
+// favorites queries
+const (
+	createfavoritesQuery = `INSERT INTO favorites (userid, lessonid) 
+	VALUES ($1, $2) 
+	RETURNING  id`
+
+	getfavoritesQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons WHERE id in (select lessonid from favorites where userid = $1);`
+
+	// getAllfavoritesQuery = `SELECT id, userid, lessonid FROM favorites where userid = $1`
+
+	deletefavoritesQuery = `delete from favorites where lessonid=$1`
+)
+
+// support queries
+const (
+	createsupportQuery = `INSERT INTO supports (userid, ProblemDescription, AnswerDescription ) 
+	VALUES ($1, $2, $3) 
+	RETURNING  id`
+
+	getsupportQuery = `SELECT id, userid, ProblemDescription, AnswerDescription FROM supports WHERE userid = $1 `
+
+	getAllsupportQuery = `SELECT id, userid, ProblemDescription, AnswerDescription from supports`
+
+	deletesupportQuery = `delete from supports where userid=$1`
+
+	updateSupportQuery = `UPDATE supports
+						SET AnswerDescription = $1
+						WHERE userid = $2 returning id, userid, ProblemDescription, AnswerDescription`
 )
