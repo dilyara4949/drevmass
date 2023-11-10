@@ -1,0 +1,66 @@
+package day
+
+import (
+	// "fmt"
+	"net/http"
+
+	"github.com/dilyara4949/drevmass/internal/domain"
+	"github.com/gin-gonic/gin"
+)
+
+type DayController struct {
+	DayUsecase domain.DayUsecase
+}
+
+
+func (dc *DayController) Create(c *gin.Context) {
+	userID := c.GetUint("x-user-id")
+	var request domain.Day
+	request.UserID = userID
+
+	err := c.ShouldBind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	// fmt.Println(request.Time)
+	
+	day, err := dc.DayUsecase.Create(c, request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, day)
+}
+
+
+func (dc *DayController) Get(c *gin.Context) {
+	userID := c.GetUint("x-user-id")
+	// fmt.Println(userID)
+	day, err := dc.DayUsecase.Get(c, userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, day)
+}
+
+
+func (dc *DayController) Update(c *gin.Context) {
+	userID := c.GetUint("x-user-id")
+	var request domain.Day
+	request.UserID = userID
+
+	err := c.ShouldBind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	request, err = dc.DayUsecase.Update(c, request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, request)
+}

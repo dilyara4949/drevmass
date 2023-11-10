@@ -3,6 +3,8 @@ package route
 import (
 	"time"
 
+	"github.com/dilyara4949/drevmass/api/route/day"
+	"github.com/dilyara4949/drevmass/api/route/product"
 	"github.com/dilyara4949/drevmass/api/route/user"
 	"github.com/dilyara4949/drevmass/pkg"
 	"github.com/dilyara4949/drevmass/pkg/middleware"
@@ -21,4 +23,6 @@ func Setup(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, gin *gin.Engin
 	protectedRouter.Use(middleware.JwtAuthMiddleware(env.AccessTokenSecret))
 	// All Private APIs
 	user.NewUserRouter(env, timeout, db, protectedRouter)
+	day.NewDayRouter(env, timeout, db, protectedRouter)
+	product.NewProductRouter(env, timeout, db, protectedRouter)
 }

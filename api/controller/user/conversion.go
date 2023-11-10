@@ -1,41 +1,23 @@
 package user
 
 import (
-	"time"
+	// "time"
 
 	"github.com/dilyara4949/drevmass/internal/domain"
 )
 
 
-func userInfoToClient(u domain.User) struct {
-	ID        uint
-	Name      string 
-	Email     string 
-	Gender    uint 
-	Height    uint 
-	Weight    uint 
-	Birth     time.Time
-	Activity  uint 
-} {
+func userInfoToClient(u domain.User) domain.UserInfo{
 	
-	user := struct {
-		ID        uint
-		Name      string 
-		Email     string 
-		Gender    uint 
-		Height    uint 
-		Weight    uint 
-		Birth     time.Time
-		Activity  uint 
-    }{
-		u.ID,
-        u.Name,
-        u.Email,
-		u.Gender,
-		u.Height,
-		u.Weight,
-		u.Birth,
-		u.Activity,
+	user := domain.UserInfo{
+		ID: u.ID,
+        Name: u.Name,
+        Email: u.Email,
+		Gender: u.Gender,
+		Height: u.Height,
+		Weight: u.Weight,
+		Birth: u.Birth,
+		Activity: u.Activity,
     }
 	return user
 }

@@ -63,5 +63,38 @@ func (u *userRepository) GetByEmail(ctx context.Context, email string) (*domain.
 	return &user, nil
 }
 
+func (u *userRepository) Update(ctx context.Context, user domain.User) (*domain.User, error) {
+	
+	if err := u.db.QueryRow(ctx, 
+		updateUserQuery, 
+		&user.Name, 
+		&user.Email, 
+		&user.Gender, 
+		&user.Height, 
+		&user.Weight, 
+		&user.Birth, 
+		&user.Activity,
+		&user.ID,
+		).Scan(
+		&user.ID, &user.Name, &user.Email, &user.Password, &user.Gender, &user.Height, &user.Weight, &user.Birth, &user.Activity,
+	); err != nil {
+		return nil, errors.Wrap(err, "Scan0")
+	}
+	// fmt.Println(user)
+	return &user, nil
+
+}
 
 
+
+func (u *userRepository) Delete(ctx context.Context, id uint) (error) {
+
+	res, err := u.db.Exec(ctx, deleteByIDUserQuery, id)
+	if err != nil {
+		return err
+	}
+	if res.RowsAffected() != 1 {
+		return errors.New("No row found to delete")
+	}
+	return nil
+}
