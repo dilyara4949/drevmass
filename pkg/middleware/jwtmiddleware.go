@@ -61,8 +61,8 @@ func JwtAuthMiddleware(secret string) gin.HandlerFunc {
                 userID, err := tokenutil.ExtractIDFromToken(authToken, secret)
 				// fmt.Println(userID)
                 if err != nil {
-                    // c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: err.Error()})
-					c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "1"})
+                    c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: err.Error()})
+					// c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "1"})
                     c.Abort()
                     return
                 }
@@ -74,7 +74,7 @@ func JwtAuthMiddleware(secret string) gin.HandlerFunc {
             c.Abort()
             return
         }
-        c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "Not1 authorized"})
+        c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "Authorization is required Header"})
         c.Abort()
     }
 }

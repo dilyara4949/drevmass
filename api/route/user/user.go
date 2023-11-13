@@ -19,8 +19,9 @@ func NewUserRouter(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, group 
 	}
 	group.GET("/user", lc.UserBasic)
 	group.POST("/user", lc.UserUpdate)
+	group.DELETE("/user", lc.UserDelete)
+
 	group.GET("/user/information", lc.UserInfo)
 	group.POST("/user/information", lc.UserUpdate)
-	group.POST("/user/delete", lc.UserDelete)
 
 }

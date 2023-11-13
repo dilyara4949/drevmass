@@ -1,9 +1,9 @@
-package route
+package auth
 
 import (
 	"time"
 
-	"github.com/dilyara4949/drevmass/api/controller"
+	"github.com/dilyara4949/drevmass/api/controller/auth"
 	"github.com/dilyara4949/drevmass/internal/repository"
 	"github.com/dilyara4949/drevmass/internal/usecase"
 	"github.com/dilyara4949/drevmass/pkg"
@@ -13,7 +13,7 @@ import (
 
 func NewLoginRouter(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, group *gin.RouterGroup) {
 	ur := repository.NewUserRepository(db)
-	lc := &controller.LoginController{
+	lc := &auth.LoginController{
 		LoginUsecase: usecase.NewLoginUsecase(ur, timeout),
 		Env:          env,
 	}

@@ -16,6 +16,8 @@ func NewFavoritesRouter(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, g
 	c := &favorites.FavoritesController{
 		FavoritesUsecase: usecase.NewfavoritesUsecase(r, timeout),
 	}
+
+	
 	group.POST("/favorites", c.Create)
 	group.GET("/favorites", c.Get)
 	group.DELETE("/favorites/:lessonid", c.Delete)

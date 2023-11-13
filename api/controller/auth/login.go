@@ -1,4 +1,4 @@
-package controller
+package auth
 
 import (
 	"net/http"
@@ -14,6 +14,18 @@ type LoginController struct {
 	Env          *pkg.Env
 }
 
+
+// @Summary Login
+// @Tags auth
+// @Description login
+// @ID login
+// @Accept  json
+// @Produce  json
+// @Param input body domain.Login true "login"
+// @Success 200 {object} domain.LoginResponse{} 
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /login [post]
 func (lc *LoginController) Login(c *gin.Context) {
 	var request domain.Login
 
@@ -37,18 +49,21 @@ func (lc *LoginController) Login(c *gin.Context) {
 	}
 
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(request.Password)) != nil {
+		
 		c.JSON(http.StatusUnauthorized, domain.ErrorResponse{Message: "Invalid credentials"})
 		return
 	}
 
 	accessToken, err := lc.LoginUsecase.CreateAccessToken(user, lc.Env.AccessTokenSecret, lc.Env.AccessTokenExpiryHour)
 	if err != nil {
+		
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
 		return
 	}
 
 	refreshToken, err := lc.LoginUsecase.CreateRefreshToken(user, lc.Env.RefreshTokenSecret, lc.Env.RefreshTokenExpiryHour)
 	if err != nil {
+	
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
 		return
 	}

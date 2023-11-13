@@ -1,6 +1,7 @@
+
 CREATE TABLE IF NOT EXISTS public.users
 (
-    id bigint NOT NULL,
+    id serial NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
     name text  NOT NULL,
@@ -18,7 +19,7 @@ CREATE TABLE IF NOT EXISTS public.users
 CREATE TABLE IF NOT EXISTS public.days
 (
     id     SERIAL primary key,
-    userid bigint BIGINT NOT NULL unique REFERENCES users(id) ON DELETE CASCADE,
+    userid bigint  NOT NULL unique REFERENCES users(id) ON DELETE CASCADE,
     mon    boolean,
     tue    boolean,
     wed    boolean,
@@ -67,4 +68,12 @@ CREATE TABLE IF NOT EXISTS public.favorites
     id       SERIAL PRIMARY KEY,
     userid   BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     lessonid BIGINT NOT NULL UNIQUE REFERENCES lessons(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS public.supports
+(
+    id       SERIAL PRIMARY KEY,
+    userid   BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    ProblemDescription text,
+	AnswerDescription text
 );

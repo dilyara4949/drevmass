@@ -1,4 +1,4 @@
-package controller
+package auth
 
 import (
 	"net/http"
@@ -14,6 +14,17 @@ type SignupController struct {
 	Env           *pkg.Env
 }
 
+// @Summary SignUp
+// @Tags auth
+// @Description signup
+// @ID signup
+// @Accept  json
+// @Produce  json
+// @Param input body domain.Signup true "signup"
+// @Success 200 {object} domain.SignupResponse{} 
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /signup [post]
 func (sc *SignupController) Signup(c *gin.Context) {
 	var request domain.Signup
 	

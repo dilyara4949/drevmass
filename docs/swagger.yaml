@@ -1,0 +1,970 @@
+basePath: /api
+definitions:
+  domain.Day:
+    properties:
+      fri:
+        type: boolean
+      id:
+        type: integer
+      mon:
+        type: boolean
+      sat:
+        type: boolean
+      sun:
+        type: boolean
+      thu:
+        type: boolean
+      time:
+        type: string
+      tue:
+        type: boolean
+      userID:
+        type: integer
+      wed:
+        type: boolean
+    type: object
+  domain.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.Favorites:
+    properties:
+      id:
+        type: integer
+      lessonID:
+        type: integer
+      userID:
+        type: integer
+    type: object
+  domain.Lesson:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      duration:
+        type: number
+      id:
+        type: integer
+      imageSrc:
+        type: string
+      name:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      videoSrc:
+        type: string
+    type: object
+  domain.Login:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.LoginResponse:
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
+  domain.Product:
+    properties:
+      depth:
+        type: string
+      description:
+        type: string
+      height:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      imageSrc:
+        type: string
+      length:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+      status:
+        type: integer
+      title:
+        type: string
+      videoSrc:
+        type: string
+      weight:
+        type: number
+    type: object
+  domain.Signup:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.SignupResponse:
+    properties:
+      accessToken:
+        type: string
+      refreshToken:
+        type: string
+    type: object
+  domain.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  domain.Support:
+    properties:
+      answerDescription:
+        type: string
+      id:
+        type: integer
+      problemDescription:
+        type: string
+      userID:
+        type: integer
+    type: object
+  domain.UserInfo:
+    properties:
+      activity:
+        type: integer
+      birth:
+        type: string
+      email:
+        type: string
+      gender:
+        type: integer
+      height:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      weight:
+        type: integer
+    type: object
+  user.UserBasic:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8081
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /Supports/{userid}:
+    get:
+      description: get Support by userid
+      operationId: get-support
+      parameters:
+      - description: user ID
+        in: path
+        name: userid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Support'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetSupport
+      tags:
+      - support
+  /days:
+    get:
+      description: get day
+      operationId: get-Day
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Day'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetDay
+      tags:
+      - Day
+    post:
+      consumes:
+      - application/json
+      description: create Day
+      operationId: create-Day
+      parameters:
+      - description: Create Day
+        in: body
+        name: Day
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Day'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Day'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateDay
+      tags:
+      - Day
+  /days/update:
+    post:
+      consumes:
+      - application/json
+      description: update day
+      operationId: update-day
+      parameters:
+      - description: update day
+        in: body
+        name: day
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Day'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Day'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: UpdateDay
+      tags:
+      - Day
+  /favorites:
+    get:
+      description: get Favorites
+      operationId: get-favorites
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Lesson'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetFavorites
+      tags:
+      - favorites
+    post:
+      consumes:
+      - application/json
+      description: create favorites
+      operationId: create-favorites
+      parameters:
+      - description: Create favorites
+        in: body
+        name: favorites
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Favorites'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Favorites'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Createfavorites
+      tags:
+      - favorites
+  /favorites/{lessonid}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete favorites
+      operationId: Delete-favorites
+      parameters:
+      - description: lesson ID
+        in: path
+        name: lessonid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete lesson from Favorites
+      tags:
+      - favorites
+  /lessons:
+    get:
+      description: get all Lessons
+      operationId: get-Lessons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Lesson'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetLessons
+      tags:
+      - Lesson
+    post:
+      consumes:
+      - application/json
+      description: create Lesson
+      operationId: create-Lesson
+      parameters:
+      - description: Create Lesson
+        in: body
+        name: Lesson
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Lesson'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Lesson'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateLesson
+      tags:
+      - Lesson
+  /lessons/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Lesson
+      operationId: Delete-Lesson
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteLesson
+      tags:
+      - Lesson
+    get:
+      description: get Lesson by id
+      operationId: get-Lesson
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Lesson'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetLesson
+      tags:
+      - Lesson
+    post:
+      consumes:
+      - application/json
+      description: update Lesson
+      operationId: update-Lesson
+      parameters:
+      - description: Lesson ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update Lesson
+        in: body
+        name: Lesson
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Lesson'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Lesson'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: UpdateLesson
+      tags:
+      - Lesson
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: login
+      operationId: login
+      parameters:
+      - description: login
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      summary: Login
+      tags:
+      - auth
+  /products:
+    get:
+      description: get all products
+      operationId: get-products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Product'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetProducts
+      tags:
+      - product
+    post:
+      consumes:
+      - application/json
+      description: create product
+      operationId: create-product
+      parameters:
+      - description: Create product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateProduct
+      tags:
+      - product
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete product
+      operationId: Delete-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteProduct
+      tags:
+      - product
+    get:
+      description: get product by id
+      operationId: get-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetProduct
+      tags:
+      - product
+    post:
+      consumes:
+      - application/json
+      description: update product
+      operationId: update-product
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update product
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Product'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: UpdateProduct
+      tags:
+      - product
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: signup
+      operationId: signup
+      parameters:
+      - description: signup
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Signup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SignupResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      summary: SignUp
+      tags:
+      - auth
+  /supports:
+    get:
+      description: get all Supports
+      operationId: get-dupports
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Support'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetSupports
+      tags:
+      - support
+    post:
+      consumes:
+      - application/json
+      description: create support
+      operationId: create-support
+      parameters:
+      - description: Create Support
+        in: body
+        name: Support
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Support'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Support'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: CreateSupport
+      tags:
+      - support
+  /supports/{userid}:
+    post:
+      consumes:
+      - application/json
+      description: answer support
+      operationId: answer-support
+      parameters:
+      - description: user ID
+        in: path
+        name: userid
+        required: true
+        type: integer
+      - description: answer Support
+        in: body
+        name: Support
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Support'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Support'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: AnswerToSupport
+      tags:
+      - support
+  /user:
+    delete:
+      consumes:
+      - application/json
+      description: Delete User
+      operationId: Delete-User
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: DeleteUser
+      tags:
+      - user
+    get:
+      description: get user
+      operationId: get-user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserBasic'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetUser
+      tags:
+      - user
+  /user/information:
+    get:
+      description: get user info
+      operationId: get-user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: GetUserInfo
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: update user
+      operationId: update-user
+      parameters:
+      - description: update user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserInfo'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: UpdateUser
+      tags:
+      - user
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

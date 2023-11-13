@@ -12,7 +12,17 @@ type LessonController struct {
 	LessonUsecase domain.LessonUsecase
 }
 
-
+// @Summary GetLesson
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description get Lesson by id
+// @ID get-Lesson
+// @Produce  json
+// @Param        id   path      int  true  "Lesson ID"
+// @Success 200 {object} domain.Lesson
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons/{id} [get]
 func (l *LessonController) GetOne(c *gin.Context) {
 	LessonID := c.Param("id")
 	// fmt.Println(LessonID)
@@ -24,6 +34,16 @@ func (l *LessonController) GetOne(c *gin.Context) {
 	c.JSON(http.StatusOK, Lesson)
 }
 
+// @Summary GetLessons
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description get all Lessons
+// @ID get-Lessons
+// @Produce  json
+// @Success 200 {object} []domain.Lesson
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons [get]
 func (l *LessonController) GetAll(c *gin.Context) {
 	lessons, err := l.LessonUsecase.GetAll(c)
 	if err != nil {
@@ -33,7 +53,20 @@ func (l *LessonController) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, lessons)
 }
 
-
+// @Summary CreateLesson
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description create Lesson
+// @ID create-Lesson
+// @Produce  json
+// @Accept       json
+//
+// @Param	Lesson	body  domain.Lesson	true	"Create Lesson"
+//
+// @Success 200 {object} domain.Lesson
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons [post]
 func (l *LessonController) Create(c *gin.Context) {
 
 	var request domain.Lesson
@@ -53,7 +86,19 @@ func (l *LessonController) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, lesson)
 }
 
-
+// @Summary UpdateLesson
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description update Lesson
+// @ID update-Lesson
+// @Produce  json
+// @Accept       json
+// @Param        id   path      int  true  "Lesson ID"
+//@Param	Lesson	body	domain.Lesson	true	"update Lesson"
+// @Success 200 {object} domain.Lesson
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons/{id} [post]
 func (l *LessonController) Update(c *gin.Context) {
 	lessonID := strToUint( c.Param("id"))
 	
@@ -82,6 +127,18 @@ func (l *LessonController) Update(c *gin.Context) {
 
 
 
+// @Summary DeleteLesson
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description Delete Lesson
+// @ID Delete-Lesson
+// @Produce  json
+// @Accept       json
+// @Param    id   path      int  true  "Lesson ID"
+// @Success 200 {object} domain.SuccessResponse
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons/{id} [delete]
 func (p *LessonController) Delete(c *gin.Context) {
 	LessonID := c.Param("id")
 

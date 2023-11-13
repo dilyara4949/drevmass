@@ -1,7 +1,6 @@
 package user
 
 import (
-	// "fmt"
 	"net/http"
 	"time"
 
@@ -13,10 +12,18 @@ type UserController struct {
 	UserUsecase domain.UserUsecase
 }
 
-
+// @Summary GetUserInfo
+// @Security ApiKeyAuth
+// @Tags user
+// @Description get user info
+// @ID get-user
+// @Produce json
+// @Success 200 {object} domain.UserInfo
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /user/information [get]
 func (uc *UserController) UserInfo(c *gin.Context) {
 	userID := c.GetUint("x-user-id")
-	// fmt.Println(userID)
 	user, err := uc.UserUsecase.GetUserByID(c, userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
@@ -26,11 +33,18 @@ func (uc *UserController) UserInfo(c *gin.Context) {
 	c.JSON(http.StatusOK, userClient)
 }
 
+// @Summary GetUser
+// @Security ApiKeyAuth
+// @Tags user
+// @Description get user 
+// @ID get-user
+// @Produce  json
+// @Success 200 {object} UserBasic
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /user [get]
 func (uc *UserController) UserBasic(c *gin.Context) {
-	// fmt.Println()
 	userID := c.GetUint("x-user-id")
-	// fmt.Println(userID)
-
 	user, err := uc.UserUsecase.GetUserByID(c, userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
@@ -41,20 +55,27 @@ func (uc *UserController) UserBasic(c *gin.Context) {
 	
 }
 
-
+// @Summary UpdateUser
+// @Security ApiKeyAuth
+// @Tags user
+// @Description update user
+// @ID update-user
+// @Produce  json
+// @Accept json
+//@Param  user	body	domain.UserInfo	true	"update user"
+// @Success 200 {object} domain.UserInfo
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /user/information [post]
 func (uc *UserController) UserUpdate(c *gin.Context) {
 	userID := c.GetUint("x-user-id")
-	// fmt.Println(userID)
 	user, err := uc.UserUsecase.GetUserByID(c, userID)
 
-
 	var request domain.UserInfo
-	
 
 	err = c.ShouldBind(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.ErrorResponse{Message: err.Error()})
-		// c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: "3"})
 		return
 	}
 	t := time.Time{}
@@ -88,6 +109,17 @@ func (uc *UserController) UserUpdate(c *gin.Context) {
 
 
 
+// @Summary DeleteUser
+// @Security ApiKeyAuth
+// @Tags user
+// @Description Delete User
+// @ID Delete-User
+// @Produce  json
+// @Accept       json
+// @Success 200 {object} domain.SuccessResponse
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /user [delete]
 func (uc *UserController) UserDelete(c *gin.Context) {
 	userID := c.GetUint("x-user-id")
 
