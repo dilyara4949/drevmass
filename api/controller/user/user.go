@@ -16,7 +16,7 @@ type UserController struct {
 // @Security ApiKeyAuth
 // @Tags user
 // @Description get user info
-// @ID get-user
+// @ID get-user-info
 // @Produce json
 // @Success 200 {object} domain.UserInfo
 // @Failure 500 {object} domain.ErrorResponse

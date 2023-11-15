@@ -150,6 +150,31 @@ func (p *LessonController) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.SuccessResponse{Message: "Lesson deleted"})
 }
 
+// @Summary ChangeOrderOfLessons
+// @Security ApiKeyAuth
+// @Tags Lesson
+// @Description change order of lessons
+// @ID change-order-lesson
+// @Produce  json
+// @Accept       json
+// @Param    a   path      int  true  "First lesson"
+// @Param    b   path      int  true  "Second lesson"
+// @Success 200 {object} domain.SuccessResponse
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /lessons/change/{a}/{b} [post]
+func (l *LessonController) ChangeOrder(c *gin.Context) {
+	a := strToUint(c.Param("a"))
+	b := strToUint(c.Param("b"))
+	err := l.LessonUsecase.ChangeOrder(c, a, b)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, domain.SuccessResponse{Message: "Order changed"})
+}
+
+
 func strToUint(s string) uint {
     i, _ := strconv.Atoi(s)
     return uint(i)

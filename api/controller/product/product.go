@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/dilyara4949/drevmass/docs"
 	"github.com/dilyara4949/drevmass/internal/domain"
+	"github.com/gin-gonic/gin"
 )
 
 type ProductController struct {
@@ -143,7 +143,37 @@ func (p *ProductController) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, domain.SuccessResponse{Message: "Product deleted"})
 }
 
+
+// @Summary ChangeOrderOfProducts
+// @Security ApiKeyAuth
+// @Tags product
+// @Description change order of products
+// @ID change-order-product
+// @Produce  json
+// @Accept       json
+// @Param    a   path      int  true  "First Product"
+// @Param    b   path      int  true  "Second Product"
+// @Success 200 {object} domain.SuccessResponse
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /products/change/{a}/{b} [post]
+func (p *ProductController) ChangeOrder(c *gin.Context) {
+	a := strToUint(c.Param("a"))
+	b := strToUint(c.Param("b"))
+	
+	err := p.ProductUsecase.ChangeOrder(c, a, b)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, domain.SuccessResponse{Message: "Order changed"})
+}
+
+
+
 func strToUint(s string) uint {
 	i, _ := strconv.Atoi(s)
 	return uint(i)
 }
+
+

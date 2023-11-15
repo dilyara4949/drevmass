@@ -23,6 +23,7 @@ type LessonRepository interface {
 	GetAll(ctx context.Context, ) ([]Lesson, error) 
 	Update(ctx context.Context,  lesson Lesson) (Lesson, error) 
 	Delete(ctx context.Context, id string) ( error)
+	ChangeOrder(ctx context.Context, a uint, b uint)  (error)
 }
 
 type LessonUsecase interface {
@@ -31,4 +32,5 @@ type LessonUsecase interface {
 	Update(c context.Context, lesson Lesson) (Lesson, error)
 	Delete(c context.Context, id string) ( error)
 	GetAll(c context.Context) ([]Lesson, error)
+	ChangeOrder(ctx context.Context, a uint, b uint)  (error)
 }

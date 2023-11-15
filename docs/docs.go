@@ -443,6 +443,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/lessons/change/{a}/{b}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "change order of lessons",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lesson"
+                ],
+                "summary": "ChangeOrderOfLessons",
+                "operationId": "change-order-lesson",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "First lesson",
+                        "name": "a",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Second lesson",
+                        "name": "b",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuccessResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/lessons/{id}": {
             "get": {
                 "security": [
@@ -716,6 +773,63 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/domain.Product"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/change/{a}/{b}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "change order of products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "ChangeOrderOfProducts",
+                "operationId": "change-order-product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "First Product",
+                        "name": "a",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Second Product",
+                        "name": "b",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuccessResponse"
                         }
                     },
                     "500": {
@@ -1174,7 +1288,7 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "GetUserInfo",
-                "operationId": "get-user",
+                "operationId": "get-user-info",
                 "responses": {
                     "200": {
                         "description": "OK",

@@ -25,6 +25,7 @@ type ProductRepository interface {
 	GetAll(ctx context.Context, ) ([]Product, error) 
 	Update(ctx context.Context,  product Product) (Product, error) 
 	Delete(ctx context.Context, id string) ( error)
+	ChangeOrder(ctx context.Context, a uint, b uint) error
 }
 
 type ProductUsecase interface {
@@ -33,4 +34,5 @@ type ProductUsecase interface {
 	Update(c context.Context, product Product) (Product, error)
 	Delete(c context.Context, id string) ( error)
 	GetAll(c context.Context) ([]Product, error)
+	ChangeOrder(ctx context.Context, a uint, b uint) error
 }

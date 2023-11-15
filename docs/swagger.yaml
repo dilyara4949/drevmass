@@ -543,6 +543,43 @@ paths:
       summary: UpdateLesson
       tags:
       - Lesson
+  /lessons/change/{a}/{b}:
+    post:
+      consumes:
+      - application/json
+      description: change order of lessons
+      operationId: change-order-lesson
+      parameters:
+      - description: First lesson
+        in: path
+        name: a
+        required: true
+        type: integer
+      - description: Second lesson
+        in: path
+        name: b
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: ChangeOrderOfLessons
+      tags:
+      - Lesson
   /login:
     post:
       consumes:
@@ -730,6 +767,43 @@ paths:
       summary: UpdateProduct
       tags:
       - product
+  /products/change/{a}/{b}:
+    post:
+      consumes:
+      - application/json
+      description: change order of products
+      operationId: change-order-product
+      parameters:
+      - description: First Product
+        in: path
+        name: a
+        required: true
+        type: integer
+      - description: Second Product
+        in: path
+        name: b
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuccessResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/domain.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: ChangeOrderOfProducts
+      tags:
+      - product
   /signup:
     post:
       consumes:
@@ -909,7 +983,7 @@ paths:
   /user/information:
     get:
       description: get user info
-      operationId: get-user
+      operationId: get-user-info
       produces:
       - application/json
       responses:

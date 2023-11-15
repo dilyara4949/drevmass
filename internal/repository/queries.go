@@ -34,37 +34,64 @@ const (
 
 // product queries
 const (
-	createProductQuery = `INSERT INTO products (Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status) 
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) 
+	createProductQuery = `INSERT INTO products (Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status, ord) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) 
 	RETURNING  id`
+	findMaxFromProductOrder = `SELECT COUNT(*) FROM products;`
 
 	getProductQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products WHERE id = $1`
 
-	getAllProductQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products`
+	getAllProductQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products order by ord`
 
 	updateProductQuery = `UPDATE products
 						SET name = $1, title = $2, Description = $3, ImageSrc = $4, VideoSrc = $5, Price = $6, Weight = $7, Length = $8, height = $9, depth = $10, icon=$11, status = $12
 						WHERE id = $13 returning id`
 
-	deleteProductQuery = `delete from products where id=$1`
+	deleteProductQuery = `delete from products where id=$1 returning ord`
+	cleanProductOrder = `UPDATE products
+							SET ord = ord - 1
+							WHERE ord > $1;`
+	ordOfProduct = `select ord from products where id = $1`
+
+	changeOrderProduct = `UPDATE products
+						SET ord = CASE
+						 WHEN id = $1 THEN $3
+						 WHEN id = $2 THEN $4
+						 ELSE ord
+					  END;`
 )
 
 
 // lesson queries
 const (
-	createLessonQuery = `INSERT INTO lessons (Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at) 
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+	createLessonQuery = `INSERT INTO lessons (Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at, ord) 
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
 	RETURNING  id`
 
 	getLessonQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons WHERE id = $1`
 
-	getAllLessonQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons`
+	getAllLessonQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Duration  ,Created_at, Updated_at FROM lessons order by ord`
 
 	updateLessonQuery = `UPDATE lessons
 						SET name = $1, title = $2, Description = $3, ImageSrc = $4, VideoSrc = $5, Duration = $6,  Updated_at = $7
 						WHERE id = $8 returning id`
 
-	deleteLessonQuery = `delete from lessons where id=$1`
+	deleteLessonQuery = `delete from lessons where id=$1 returning ord`
+	
+	cleanLessonOrder = `UPDATE lessons
+	SET ord = ord - 1
+	WHERE ord > $1;`
+
+	ordOfLesson = `select ord from lessons where id = $1`
+
+	changeOrderLesson = `UPDATE lessons
+					SET ord = CASE
+					WHEN id = $1 THEN $3
+					WHEN id = $2 THEN $4
+					ELSE ord
+					END;`
+
+	findMaxFromLessonOrder = `SELECT COUNT(*) FROM lessons;`
 )
 
 // favorites queries

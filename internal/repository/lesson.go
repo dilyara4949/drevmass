@@ -21,10 +21,11 @@ func NewLessonRepository(db *pgxpool.Pool) domain.LessonRepository {
 }
 
 func (l *lessonRepository) Create(ctx context.Context, lesson domain.Lesson) (domain.Lesson, error) {
-
-	// format := "2006-01-02"
-
-	// s1, _ := time.Parse(format, "2018-12-12")
+	ord := 0
+	if err := l.db.QueryRow(ctx, findMaxFromLessonOrder,).Scan(&ord); err != nil {
+		return domain.Lesson{}, errors.Wrap(err, "Scan")
+	}
+	ord += 1
 
 	if err := l.db.QueryRow(
 		ctx,
@@ -37,6 +38,7 @@ func (l *lessonRepository) Create(ctx context.Context, lesson domain.Lesson) (do
 		&lesson.Duration,
 		&lesson.Created_at,     
 		&lesson.Updated_at,
+		ord,
 
 	).Scan(&lesson.ID); err != nil {
 		return domain.Lesson{}, errors.Wrap(err, "Scan")
@@ -96,13 +98,16 @@ func (l *lessonRepository) Update(ctx context.Context, lesson domain.Lesson) (do
 
 func (l *lessonRepository) Delete(ctx context.Context, id string) (error) {
 
-	res, err := l.db.Exec(ctx, deleteLessonQuery, id)
+	var ord *int
+	if err := l.db.QueryRow(ctx, deleteLessonQuery, id).Scan(&ord); ord == nil {
+			return errors.Wrap(err, "(Lesson with given id does not exist) Scan")
+	}
+
+	_, err := l.db.Exec(ctx, cleanLessonOrder, &ord)
 	if err != nil {
 		return err
 	}
-	if res.RowsAffected() != 1 {
-		return errors.New("No row found to delete")
-	}
+	
 	return nil
 }
 
@@ -139,4 +144,24 @@ func (l *lessonRepository) GetAll(ctx context.Context) ([]domain.Lesson, error) 
 	}
 
 	return lessons, nil
+}
+
+
+func (p *lessonRepository) ChangeOrder(ctx context.Context, a uint, b uint)  (error) {
+	aa := 0
+	bb := 0
+	if err := p.db.QueryRow(ctx, ordOfLesson, a).Scan(&aa); err != nil {
+		return errors.Wrap(err, "(Lesson with given id does not exist) Scan")
+	}
+
+	if err := p.db.QueryRow(ctx, ordOfLesson, b).Scan(&bb); err != nil {
+		return errors.Wrap(err, "(lesson with given id does not exist) Scan")
+	}
+
+	_, err := p.db.Exec(ctx, changeOrderLesson, a, b, bb, aa)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

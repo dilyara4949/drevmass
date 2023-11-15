@@ -51,4 +51,10 @@ func (p *productUsecase) Delete(c context.Context, id string) ( error) {
 	return p.productRepository.Delete(c, id)
 }
 
+func (p *productUsecase) ChangeOrder(ctx context.Context, a uint, b uint) error {
+	_, cancel := context.WithTimeout(ctx, p.contextTimeout)
+	defer cancel()
+	return p.productRepository.ChangeOrder(ctx, a, b)
+}
+
 

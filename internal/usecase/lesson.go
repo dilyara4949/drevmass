@@ -51,4 +51,8 @@ func (l *lessonUsecase) Delete(c context.Context, id string) ( error) {
 	return l.lessonRepository.Delete(c, id)
 }
 
-
+func (l *lessonUsecase) ChangeOrder(ctx context.Context, a uint, b uint)  (error) {
+	_, cancel := context.WithTimeout(ctx, l.contextTimeout)
+	defer cancel()
+	return l.lessonRepository.ChangeOrder(ctx, a, b)
+}

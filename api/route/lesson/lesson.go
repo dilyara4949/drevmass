@@ -21,5 +21,5 @@ func NewLessonRouter(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, grou
 	group.GET("/lessons/:id", c.GetOne)
 	group.POST("/lessons/:id", c.Update)
 	group.DELETE("/lessons/:id", c.Delete)
-
+	group.POST("/lessons/change/:a/:b", c.ChangeOrder)
 }

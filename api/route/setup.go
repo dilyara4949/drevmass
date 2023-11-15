@@ -21,7 +21,7 @@ import (
 
 
 func Setup(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, gin *gin.Engine) {
-
+	// eng := engine.Default()
 	publicRouter := gin.Group("/api")
 
     // All Public APIs
@@ -45,3 +45,33 @@ func Setup(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, gin *gin.Engin
 	auth.NewLogoutRouter(env, timeout, db, protectedRouter)
 
 }
+
+//  r := gin.Default()
+//     eng := engine.Default()
+//     cfg := config.Config{
+//         Databases: config.DatabaseList{
+//             "default": {
+//                 Host:       "127.0.0.1",
+//                 Port:       "5432",
+//                 User:       "postgres",
+//                 Pwd:        "12345",
+//                 Name:       "drevmass",
+//                 Driver:     config.DriverPostgresql,
+//             },
+//         },
+//         UrlPrefix: "admin",
+//         Store: config.Store{
+//             Path:   "./uploads",
+//             Prefix: "uploads",
+//         },
+//         Language: language.CN,
+//     }
+
+//     // AddGenerator can also be used to load the Generator, like:
+//     // eng.AddGenerator("user", GetUserTable)
+
+//     eng.AddConfig(&cfg).
+//         AddGenerators(tables.Generators).  // 加载插件
+//         Use(r)
+
+//     r.Run(":9033")

@@ -19,9 +19,12 @@ func NewProductRepository(db *pgxpool.Pool) domain.ProductRepository {
 }
 
 func (p *productRepository) Create(ctx context.Context, product domain.Product) (domain.Product, error) {
-	if err := p.db.QueryRow(
-		ctx,
-		createProductQuery,   
+	ord := 0
+	if err := p.db.QueryRow(ctx, findMaxFromProductOrder,).Scan(&ord); err != nil {
+		return domain.Product{}, errors.Wrap(err, "Scan")
+	}
+	ord += 1
+	if err := p.db.QueryRow(ctx, createProductQuery,   
 		&product.Name, 
 		&product.Title,    
 		&product.Description,     
@@ -34,9 +37,10 @@ func (p *productRepository) Create(ctx context.Context, product domain.Product) 
 		&product.Depth,
 		&product.Icon,
 		&product.Status,   
+		ord,
 
 	).Scan(&product.ID); err != nil {
-		return domain.Product{}, errors.Wrap(err, "Scan")
+		return domain.Product{}, errors.Wrap(err, "Scan9")
 	}
 
 	return product, nil
@@ -67,8 +71,6 @@ func (p *productRepository) GetByID(ctx context.Context, id string) (domain.Prod
 }
 
 
-
-
 func (p *productRepository) Update(ctx context.Context, product domain.Product) (domain.Product, error) {
 	
 	if err := p.db.QueryRow(ctx, 
@@ -97,14 +99,16 @@ func (p *productRepository) Update(ctx context.Context, product domain.Product) 
 
 
 func (p *productRepository) Delete(ctx context.Context, id string) (error) {
+	var ord *int
+	if err := p.db.QueryRow(ctx, deleteProductQuery, id).Scan(&ord); ord == nil {
+			return errors.Wrap(err, "(Product with given id does not exist) Scan")
+	}
 
-	res, err := p.db.Exec(ctx, deleteProductQuery, id)
+	_, err := p.db.Exec(ctx, cleanProductOrder, &ord)
 	if err != nil {
 		return err
 	}
-	if res.RowsAffected() != 1 {
-		return errors.New("No row found to delete")
-	}
+	
 	return nil
 }
 
@@ -120,7 +124,9 @@ func (p *productRepository) GetAll(ctx context.Context) ([]domain.Product, error
 	}
 
 	for rows.Next() {
+		// rows.Scan()
 		r, err := rows.Values()
+		
 		fmt.Println(r)
 		if err != nil {
 			return nil, err
@@ -144,4 +150,23 @@ func (p *productRepository) GetAll(ctx context.Context) ([]domain.Product, error
 	}
 
 	return products, nil
+}
+
+func (p *productRepository) ChangeOrder(ctx context.Context, a uint, b uint)  (error) {
+	aa := 0
+	bb := 0
+	if err := p.db.QueryRow(ctx, ordOfProduct, a).Scan(&aa); err != nil {
+		return errors.Wrap(err, "(Product with given id does not exist) Scan")
+	}
+
+	if err := p.db.QueryRow(ctx, ordOfProduct, b).Scan(&bb); err != nil {
+		return errors.Wrap(err, "(Product with given id does not exist) Scan")
+	}
+
+	_, err := p.db.Exec(ctx, changeOrderProduct, a, b, bb, aa)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
