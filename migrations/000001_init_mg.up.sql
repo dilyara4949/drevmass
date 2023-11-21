@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS public.products
 	Height      text,
 	Depth       text,
 	Icon        text,
-	Status      int
+	Status      int,
+    ord         int
 );
 
 CREATE TABLE IF NOT EXISTS public.lessons
@@ -60,7 +61,8 @@ CREATE TABLE IF NOT EXISTS public.lessons
 	VideoSrc    text,
 	Duration    real,
     Created_at  timestamp,
-    Updated_at  timestamp
+    Updated_at  timestamp,
+    ord         int
 );
 
 CREATE TABLE IF NOT EXISTS public.favorites

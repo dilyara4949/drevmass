@@ -64,7 +64,7 @@ func (d *dayRepository) Get(ctx context.Context, userID uint) (domain.Day, error
 		&day.Sun, 
 		&day.Time,
 	); err != nil {
-		return domain.Day{}, errors.Wrap(err, "Scan09")
+		return domain.Day{}, errors.Wrap(err, "Scan")
 	}
 
 	return day, nil
