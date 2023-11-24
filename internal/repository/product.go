@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
-	// "fmt"
 
 	"github.com/dilyara4949/drevmass/internal/domain"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -119,7 +117,6 @@ func (p *productRepository) GetAll(ctx context.Context) ([]domain.Product, error
 	for rows.Next() {
 		r, err := rows.Values()
 
-		fmt.Println(r)
 		if err != nil {
 			return nil, err
 		}
@@ -156,7 +153,6 @@ func (p *productRepository) GetAllPriceUp(ctx context.Context) ([]domain.Product
 	for rows.Next() {
 		r, err := rows.Values()
 
-		fmt.Println(r)
 		if err != nil {
 			return nil, err
 		}
@@ -193,7 +189,6 @@ func (p *productRepository) GetAllPriceDown(ctx context.Context) ([]domain.Produ
 	for rows.Next() {
 		r, err := rows.Values()
 
-		fmt.Println(r)
 		if err != nil {
 			return nil, err
 		}
