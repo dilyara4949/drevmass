@@ -22,5 +22,6 @@ func NewProductRouter(env *pkg.Env, timeout time.Duration, db *pgxpool.Pool, gro
 	group.POST("/products/:id", c.Update)
 	group.DELETE("/products/:id", c.Delete)
 	group.POST("/products/change/:a/:b", c.ChangeOrder)
-
+	group.GET("/products/pricedown", c.GetAllPricedown)
+	group.GET("/products/priceup", c.GetAllPriceUp)
 }

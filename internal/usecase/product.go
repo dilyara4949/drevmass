@@ -7,17 +7,15 @@ import (
 	"github.com/dilyara4949/drevmass/internal/domain"
 )
 
-
-
 type productUsecase struct {
 	productRepository domain.ProductRepository
-	contextTimeout time.Duration
+	contextTimeout    time.Duration
 }
 
 func NewProductUsecase(productRepository domain.ProductRepository, timeout time.Duration) domain.ProductUsecase {
 	return &productUsecase{
 		productRepository: productRepository,
-		contextTimeout: timeout,
+		contextTimeout:    timeout,
 	}
 }
 
@@ -39,13 +37,25 @@ func (p *productUsecase) GetAll(c context.Context) ([]domain.Product, error) {
 	return p.productRepository.GetAll(c)
 }
 
+func (p *productUsecase) GetAllPriceUp(c context.Context) ([]domain.Product, error) {
+	_, cancel := context.WithTimeout(c, p.contextTimeout)
+	defer cancel()
+	return p.productRepository.GetAllPriceUp(c)
+}
+
+func (p *productUsecase) GetAllPriceDown(c context.Context) ([]domain.Product, error) {
+	_, cancel := context.WithTimeout(c, p.contextTimeout)
+	defer cancel()
+	return p.productRepository.GetAllPriceDown(c)
+}
+
 func (p *productUsecase) Update(c context.Context, product domain.Product) (domain.Product, error) {
 	_, cancel := context.WithTimeout(c, p.contextTimeout)
 	defer cancel()
 	return p.productRepository.Update(c, product)
 }
 
-func (p *productUsecase) Delete(c context.Context, id string) ( error) {
+func (p *productUsecase) Delete(c context.Context, id string) error {
 	_, cancel := context.WithTimeout(c, p.contextTimeout)
 	defer cancel()
 	return p.productRepository.Delete(c, id)
@@ -56,5 +66,3 @@ func (p *productUsecase) ChangeOrder(ctx context.Context, a uint, b uint) error 
 	defer cancel()
 	return p.productRepository.ChangeOrder(ctx, a, b)
 }
-
-

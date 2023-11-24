@@ -54,6 +54,44 @@ func (p *ProductController) GetAll(c *gin.Context) {
 	c.JSON(http.StatusOK, products)
 }
 
+// @Summary GetProducts price up
+// @Security ApiKeyAuth
+// @Tags product
+// @Description get all products price up
+// @ID get-products-price-up
+// @Produce  json
+// @Success 200 {object} []domain.Product
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /products/priceup [get]
+func (p *ProductController) GetAllPriceUp(c *gin.Context) {
+	products, err := p.ProductUsecase.GetAllPriceUp(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, products)
+}
+
+// @Summary GetProducts price down
+// @Security ApiKeyAuth
+// @Tags product
+// @Description get all products price down
+// @ID get-products-price-down
+// @Produce  json
+// @Success 200 {object} []domain.Product
+// @Failure 500 {object} domain.ErrorResponse
+// @Failure default {object} domain.ErrorResponse
+// @Router /products/pricedown [get]
+func (p *ProductController) GetAllPricedown(c *gin.Context) {
+	products, err := p.ProductUsecase.GetAllPriceDown(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, domain.ErrorResponse{Message: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, products)
+}
+
 // @Summary CreateProduct
 // @Security ApiKeyAuth
 // @Tags product

@@ -5,40 +5,39 @@ import (
 	"time"
 )
 
-
 type User struct {
-	ID        uint   
-	Email     string 
-	Password  string 
-	Name      string 
-	Gender    uint 
-	Height    uint 
-	Weight    uint 
-	Birth     time.Time
-	Activity  uint 
+	ID       uint      `json:"id"`
+	Email    string    `json:"email"`
+	Password string    `json:"password"`
+	Name     string    `json:"name"`	
+	Gender   uint      `json:"gender"`
+	Height   uint      `json:"height"`
+	Weight   uint      `json:"weight"`
+	Birth    time.Time `json:"birth"`
+	Activity uint      `json:"activity"`
 }
 
 type UserInfo struct {
-	ID        uint   
-	Email     string 
-	Name      string 
-	Gender    uint 
-	Height    uint 
-	Weight    uint 
-	Birth     time.Time
-	Activity  uint 
+	ID       uint      `json:"id"`
+	Email    string    `json:"email"`
+	Name     string    `json:"name"`
+	Gender   uint      `json:"gender"`
+	Height   uint      `json:"height"`
+	Weight   uint      `json:"weight"`
+	Birth    time.Time `json:"birth"`
+	Activity uint      `json:"activity"`
 }
 
 type UserRepository interface {
 	Create(ctx context.Context, user *User) (*User, error)
-	GetByEmail(ctx context.Context, email string) (*User, error) 
-	GetByID(ctx context.Context, id uint) (*User, error) 
-	Update(ctx context.Context, user User) (*User, error) 
-	Delete(ctx context.Context, id uint) ( error)
+	GetByEmail(ctx context.Context, email string) (*User, error)
+	GetByID(ctx context.Context, id uint) (*User, error)
+	Update(ctx context.Context, user User) (*User, error)
+	Delete(ctx context.Context, id uint) error
 }
 
 type UserUsecase interface {
 	GetUserByID(c context.Context, id uint) (*User, error)
 	Update(c context.Context, user User) (*User, error)
-	Delete(c context.Context, id uint) ( error)
+	Delete(c context.Context, id uint) error
 }

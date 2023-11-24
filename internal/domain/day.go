@@ -5,16 +5,16 @@ import (
 )
 
 type Day struct {
-	ID     uint
-	UserID uint
-	Mon    bool
-	Tue    bool
-	Wed    bool
-	Thu    bool
-	Fri    bool
-	Sat    bool
-	Sun    bool
-	Time   string
+	ID     uint   `json:"id"`
+	UserID uint   `json:"user_id"`
+	Mon    bool   `json:"mon"`
+	Tue    bool   `json:"tue"`
+	Wed    bool   `json:"wed"`
+	Thu    bool   `json:"thu"`
+	Fri    bool   `json:"fri"`
+	Sat    bool   `json:"sat"`
+	Sun    bool   `json:"sun"`
+	Time   string `json:"time"`
 }
 
 type DayRepository interface {

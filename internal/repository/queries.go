@@ -41,6 +41,10 @@ const (
 
 	getProductQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products WHERE id = $1`
 
+	getAllProductPriceUpQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products order by price`
+
+	getAllProductPriceDownQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products order by price desc`
+
 	getAllProductQuery = `SELECT id, Name, Title , Description, ImageSrc, VideoSrc, Price  ,Weight ,Length, Height, Depth, Icon, Status FROM products order by ord`
 
 	updateProductQuery = `UPDATE products
